@@ -7,11 +7,13 @@ function createButton(element, className) {
 }
 var strs = [
     ['Clear', '+'],
-    ['7', '8', '9', '*'],
+    ['7', '8', '9', '×'],
     ['4', '5', '6', '-'],
-    ['1', '2', '3', '+'],
+    ['1', '2', '3', '÷'],
     ['0', '.', '='],
 ];
+var nums = '0123456789';
+var operations = '+-×÷';
 window.addEventListener('load', function () {
     var container = document.createElement('div');
     container.classList.add('container');
@@ -23,8 +25,56 @@ window.addEventListener('load', function () {
     span.classList.add('result');
     span.textContent = '0';
     output.appendChild(span);
+    var n1 = '';
+    var operation = '';
+    var n2 = '';
     container.addEventListener('click', function (e) {
-        console.log(e.target);
+        if (e.target instanceof HTMLButtonElement) {
+            var button = e.target;
+            var key = button.textContent;
+            if (nums.indexOf(key) >= 0) {
+                if (!operation) {
+                    if (n1 == '0') {
+                        n1 = '';
+                    }
+                    n1 = n1 + key;
+                    span.textContent = n1;
+                }
+                else {
+                    if (n2 == '0') {
+                        n2 = '';
+                    }
+                    n2 += key;
+                    span.textContent = n2;
+                }
+            }
+            else if (operations.indexOf(key) >= 0) {
+                operation += key;
+            }
+            else {
+                if (key === '=') {
+                    var num1 = Number(n1);
+                    var num2 = Number(n2);
+                    var answer = void 0;
+                    if (operation == '+') {
+                        answer = num1 + num2;
+                    }
+                    else if (operation == '-') {
+                        answer = num1 - num2;
+                    }
+                    else if (operation == '×') {
+                        answer = num1 * num2;
+                    }
+                    else {
+                        answer = num1 / num2;
+                    }
+                    span.textContent = answer.toString();
+                    n1 = '';
+                    n2 = '';
+                    operation = '';
+                }
+            }
+        }
     });
     strs.forEach(function (array) {
         var rowDiv = document.createElement('div');
