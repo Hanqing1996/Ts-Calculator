@@ -30,7 +30,27 @@ container.addEventListener('click',(e)=>{
 })
 ```
 
-#### 【重构】
+#### 命名
+1. 对于一时不知道叫什么的函数，应该暂时起名为 xxx,yyy,zzz...
+2. 根据返回值命名
+```
+function updateContainer(container) {
+    strs.forEach(array => {
+        let rowDiv: HTMLDivElement = document.createElement('div')
+        rowDiv.classList.add('row')
+        array.forEach(element => {
+            let button: HTMLButtonElement = createButton(element, `text-${element}`)
+            rowDiv.appendChild(button)
+        })
+        container.appendChild(rowDiv)
+    })
+    return container
+}
+```
+
+
+#### 重构
 1. 加注释，明确每部分代码的功能
 2. 重复出现的变量/操作，抽取到一个函数里面
-3. 复杂的 if-else 逻辑，用表驱动编程优化
+3. 最终每个函数不应超过5行
+4. 重构是每天都要进行的
