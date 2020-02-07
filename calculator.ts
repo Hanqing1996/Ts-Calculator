@@ -2,19 +2,20 @@ class Calculator {
     public container: HTMLDivElement;
     public output: HTMLDivElement;
     public span: HTMLSpanElement;
-    public strs: Array<Array<string>>=[
+    public clear: HTMLButtonElement;
+    public strs: Array<Array<string>> = [
         ['Clear', '+'],
         ['7', '8', '9', '×'],
         ['4', '5', '6', '-'],
         ['1', '2', '3', '÷'],
         ['0', '.', '='],
     ];
-    public nums: string= '0123456789';
+    public nums: string = '0123456789.';
     public answer: number;
-    public operations: string='+-×÷';
-    public n1: string='';
-    public operation: string='';
-    public n2: string='';
+    public operations: string = '+-×÷';
+    public n1: string = '';
+    public operation: string = '';
+    public n2: string = '';
 
     constructor() {
         this.createContainer()
@@ -22,6 +23,7 @@ class Calculator {
         this.createSpan()
         this.updateContainer()
         this.addContainerEvent()
+        this.addClearEvent()
     }
 
     // 声明创建按钮函数
@@ -66,6 +68,11 @@ class Calculator {
             array.forEach(element => {
                 let button: HTMLButtonElement = this.createButton(element, `text-${element}`)
                 rowDiv.appendChild(button)
+
+                if (element === 'Clear') {
+                    this.clear = button
+
+                }
             })
             this.container.appendChild(rowDiv)
         })
@@ -77,7 +84,7 @@ class Calculator {
             if (this.n1 == '0') {
                 this.n1 = ''
             }
-            this.n1 = key
+            this.n1 += key
             this.span.textContent = this.n1
         } else {
             if (this.n2 == '0') {
@@ -90,8 +97,8 @@ class Calculator {
 
     // 计算
     calculate() {
-        let num1: number = Number(this.n1)
-        let num2: number = Number(this.n2)
+        let num1: number = parseFloat(this.n1)
+        let num2: number = parseFloat(this.n2)
         let answer: number
         if (this.operation == '+') {
             answer = num1 + num2
@@ -102,7 +109,7 @@ class Calculator {
         } else {
             answer = num1 / num2
         }
-        this.answer = answer
+        this.answer = parseFloat(answer.toFixed(2))
     }
 
     // 重置 n1,n2,operation
@@ -135,9 +142,17 @@ class Calculator {
             }
         })
     }
+
+    // 为 clear 按键设置监听事件
+    addClearEvent() {
+        this.clear.addEventListener('click', () => {
+            this.initial()
+            this.span.textContent='0'
+        })
+    }
 }
 
-// 页面加载完毕后，生成一个 Calculator 实例
+// 页面加载完毕后，生成一个 Calculator
 window.addEventListener('load', () => {
     let calculator = new Calculator()
 });

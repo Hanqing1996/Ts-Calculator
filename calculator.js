@@ -7,7 +7,7 @@ var Calculator = /** @class */ (function () {
             ['1', '2', '3', '÷'],
             ['0', '.', '='],
         ];
-        this.nums = '0123456789';
+        this.nums = '0123456789.';
         this.operations = '+-×÷';
         this.n1 = '';
         this.operation = '';
@@ -17,6 +17,7 @@ var Calculator = /** @class */ (function () {
         this.createSpan();
         this.updateContainer();
         this.addContainerEvent();
+        this.addClearEvent();
     }
     // 声明创建按钮函数
     Calculator.prototype.createButton = function (element, className) {
@@ -57,6 +58,9 @@ var Calculator = /** @class */ (function () {
             array.forEach(function (element) {
                 var button = _this.createButton(element, "text-" + element);
                 rowDiv.appendChild(button);
+                if (element === 'Clear') {
+                    _this.clear = button;
+                }
             });
             _this.container.appendChild(rowDiv);
         });
@@ -67,7 +71,7 @@ var Calculator = /** @class */ (function () {
             if (this.n1 == '0') {
                 this.n1 = '';
             }
-            this.n1 = key;
+            this.n1 += key;
             this.span.textContent = this.n1;
         }
         else {
@@ -80,8 +84,8 @@ var Calculator = /** @class */ (function () {
     };
     // 计算
     Calculator.prototype.calculate = function () {
-        var num1 = Number(this.n1);
-        var num2 = Number(this.n2);
+        var num1 = parseFloat(this.n1);
+        var num2 = parseFloat(this.n2);
         var answer;
         if (this.operation == '+') {
             answer = num1 + num2;
@@ -95,7 +99,7 @@ var Calculator = /** @class */ (function () {
         else {
             answer = num1 / num2;
         }
-        this.answer = answer;
+        this.answer = parseFloat(answer.toFixed(2));
     };
     // 重置 n1,n2,operation
     Calculator.prototype.initial = function () {
@@ -127,9 +131,17 @@ var Calculator = /** @class */ (function () {
             }
         });
     };
+    // 为 clear 按键设置监听事件
+    Calculator.prototype.addClearEvent = function () {
+        var _this = this;
+        this.clear.addEventListener('click', function () {
+            _this.initial();
+            _this.span.textContent = '0';
+        });
+    };
     return Calculator;
 }());
-// 页面加载完毕后，生成一个 Calculator 实例
+// 页面加载完毕后，生成一个 Calculator
 window.addEventListener('load', function () {
     var calculator = new Calculator();
 });
