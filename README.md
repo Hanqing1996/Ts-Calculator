@@ -10,44 +10,6 @@
 2. 
 > 
 
-#### 【DOM】获取触发事件的元素text
-```
-container.addEventListener('click',(e)=>{
-    console.log(e.target.textContent)
-})
-```
-
-#### 【DOM】TS:判断触发事件的元素类型
-```
-container.addEventListener('click',(e)=>{
-    if(e.target instanceof HTMLButtonElement){
-        let button:HTMLButtonElement=e.target
-        console.log(button.textContent)
-    }
-
-    // warn:Property 'textContent' does not exist on type 'EventTarget'.
-    console.log(e.target.textContent)
-})
-```
-
-#### 命名
-1. 对于一时不知道叫什么的函数，应该暂时起名为 xxx,yyy,zzz...
-2. 根据返回值命名
-```
-function updateContainer(container) {
-    strs.forEach(array => {
-        let rowDiv: HTMLDivElement = document.createElement('div')
-        rowDiv.classList.add('row')
-        array.forEach(element => {
-            let button: HTMLButtonElement = createButton(element, `text-${element}`)
-            rowDiv.appendChild(button)
-        })
-        container.appendChild(rowDiv)
-    })
-    return container
-}
-```
-
 #### 重构
 1. 加注释，明确每部分代码的功能
 2. 重复出现的变量/操作，抽取到一个函数里面
