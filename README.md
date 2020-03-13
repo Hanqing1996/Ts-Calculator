@@ -19,4 +19,4 @@
 #### 使用面向对象优化
 1. 全局变量：改为 class 的字段,各个字段的初始化不在 constructor 中
 2. 各部分操作性代码：封装成 class 的函数，
-3. 注意 class 属性字段不作为参数（read:this.xxx）或返回值（wirite:this.xxx=...）
+3. 注意 class 属性字段不作为参数或返回值。读 class 属性字段用 read:this.xxx。写 class 属性字段用 wirite:this.xxx=...
